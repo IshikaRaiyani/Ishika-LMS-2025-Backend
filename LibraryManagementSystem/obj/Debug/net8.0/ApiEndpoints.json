@@ -1,0 +1,146 @@
+[
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "AddAdminAsync",
+    "RelativePath": "AddAdminController/AddAdmin",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addAdminDto",
+        "Type": "LibraryManagementSystem.DTOs.AdminDTOs.AddAdminDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "AddLibrarianAsync",
+    "RelativePath": "AddAdminController/AddLibrarian",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "addLibrarianDto",
+        "Type": "LibraryManagementSystem.DTOs.LibrarianDTOs.AddLibrarianDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "BlockStudentAsync",
+    "RelativePath": "AddAdminController/BlockStudent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateStudentStatusDto",
+        "Type": "LibraryManagementSystem.DTOs.AdminDTOs.UpdateStudentStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "DeleteLibrarianAsync",
+    "RelativePath": "AddAdminController/DeleteLibrarian",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "UnblockStudentAsync",
+    "RelativePath": "AddAdminController/UnblockStudent",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateStudentStatusDto",
+        "Type": "LibraryManagementSystem.DTOs.AdminDTOs.UpdateStudentStatusDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "RegistrationStudentAsync",
+    "RelativePath": "StudentController/RegistrationStudent",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserAdminDto",
+        "Type": "LibraryManagementSystem.DTOs.UserDTOs.RegisterStudentDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.UserAuthenticationController",
+    "Method": "LogInUserAsync",
+    "RelativePath": "UserAuthenticationController/LogInUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "LibraryManagementSystem.DTOs.UserAuthenticationDTOs.UserLoginDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.UserAuthenticationController",
+    "Method": "RequestResetPassword",
+    "RelativePath": "UserAuthenticationController/RequestResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "LibraryManagementSystem.DTOs.ResetPasswordDTOs.ResetRequestPasswordDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.UserAuthenticationController",
+    "Method": "ResetPassword",
+    "RelativePath": "UserAuthenticationController/ResetPassword",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "resetPasswordDto",
+        "Type": "LibraryManagementSystem.DTOs.ResetPasswordDTOs.ResetPasswordDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
