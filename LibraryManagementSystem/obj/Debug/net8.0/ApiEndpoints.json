@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "AddBookAsync",
+    "RelativePath": "AddAdminController/AddBook",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "book",
+        "Type": "LibraryManagementSystem.Models.Book",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
     "Method": "AddLibrarianAsync",
     "RelativePath": "AddAdminController/AddLibrarian",
     "HttpMethod": "POST",
@@ -35,7 +51,7 @@
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
     "Method": "BlockStudentAsync",
     "RelativePath": "AddAdminController/BlockStudent",
-    "HttpMethod": "PUT",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -49,8 +65,24 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "DeleteBookAsync",
+    "RelativePath": "AddAdminController/DeleteBooks/{bookId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "bookId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
     "Method": "DeleteLibrarianAsync",
-    "RelativePath": "AddAdminController/DeleteLibrarian",
+    "RelativePath": "AddAdminController/DeleteLibrarian/{userId}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -65,9 +97,115 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetActiveUsersAsync",
+    "RelativePath": "AddAdminController/GetActiveUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetAllBooksAsync",
+    "RelativePath": "AddAdminController/GetAllBooks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[LibraryManagementSystem.DTOs.BookDTOs.GetAllBooksDTO, LibraryManagementSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetAllUsersAsync",
+    "RelativePath": "AddAdminController/GetAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetBlockedUsers",
+    "RelativePath": "AddAdminController/GetBlockedUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetBookById",
+    "RelativePath": "AddAdminController/GetBookByid",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Bookid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "LibraryManagementSystem.DTOs.BookDTOs.GetBookByIdDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetTotalAvailableBooksAsync",
+    "RelativePath": "AddAdminController/GetTotalAvailableBooks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetTotalBookCount",
+    "RelativePath": "AddAdminController/GetTotalBookCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetUserCount",
+    "RelativePath": "AddAdminController/GetUserCount",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
     "Method": "UnblockStudentAsync",
     "RelativePath": "AddAdminController/UnblockStudent",
-    "HttpMethod": "PUT",
+    "HttpMethod": "PATCH",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -75,6 +213,144 @@
         "Name": "updateStudentStatusDto",
         "Type": "LibraryManagementSystem.DTOs.AdminDTOs.UpdateStudentStatusDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "UpdateBook",
+    "RelativePath": "AddAdminController/UpdateBookById",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "LibraryManagementSystem.DTOs.BookDTOs.UpdateBookDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
+    "Method": "ApproveBorrowRequestAsync",
+    "RelativePath": "LibrarianController/ApproveBorrowRequest",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TransactionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
+    "Method": "ApproveReturnRequestAsync",
+    "RelativePath": "LibrarianController/ApproveReturnRequest",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TransactionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
+    "Method": "GetPendingBorrowRequestsAsync",
+    "RelativePath": "LibrarianController/GetPendingBorrowRequests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
+    "Method": "RejectBorrowRequestAsync",
+    "RelativePath": "LibrarianController/RejectBorrowRequest",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TransactionId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "BorrowBookRequestAsync",
+    "RelativePath": "StudentController/BorrowBookRequest",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "borrowBookRequestdto",
+        "Type": "LibraryManagementSystem.DTOs.StudentDTOs.BorrowBookRequestDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "CurrentBookingAsync",
+    "RelativePath": "StudentController/CurrentBooking",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "GetBookingHistory",
+    "RelativePath": "StudentController/GetBookingHistory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "GetPendingRequest",
+    "RelativePath": "StudentController/GetPendingRequest",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Userid",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -90,6 +366,22 @@
       {
         "Name": "UserAdminDto",
         "Type": "LibraryManagementSystem.DTOs.UserDTOs.RegisterStudentDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "ReturnBookRequestAsync",
+    "RelativePath": "StudentController/ReturnBookRequest",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "TransactionId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

@@ -16,6 +16,8 @@ namespace LibraryManagementSystem.DTOs.AccessTokenDTOs
 
         public string RoleName { get; set; }
 
+        public int UserId { get; set; }
+
 
     }
 }

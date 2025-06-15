@@ -8,7 +8,7 @@ namespace LibraryManagementSystem.Controllers
 {
     [ApiController]
     [Route("UserAuthenticationController")]
-    [Authorize(Roles = "Admin, Librarian, Student")]
+    //[Authorize(Roles = "Admin, Librarian, Student")]
     public class UserAuthenticationController : ControllerBase
     {
         private readonly IUserAuthenticationService _userAuthenticationService;
@@ -18,7 +18,7 @@ namespace LibraryManagementSystem.Controllers
             _userAuthenticationService = userAuthenticationService;
         }
 
-        //[Authorize(Roles = "Admin, Librarian, Student")]
+        
         [AllowAnonymous]
         [HttpPost("LogInUser")]
         public async Task<IActionResult> LogInUserAsync([FromBody] UserLoginDTO userDto)
@@ -29,7 +29,7 @@ namespace LibraryManagementSystem.Controllers
 
             if (response == null)
             {
-                return BadRequest("Error in creating Token/ Invalid Email Address / Invalid Password");
+                return BadRequest("Error in creating Token/ Invalid Email Address / Invalid Password/Student in Block Mode");
             }
 
             return Ok(response);

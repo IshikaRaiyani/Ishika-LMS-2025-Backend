@@ -1,5 +1,8 @@
 ﻿using LibraryManagementSystem.DTOs.AdminDTOs;
+using LibraryManagementSystem.DTOs.BookDTOs;
 using LibraryManagementSystem.DTOs.LibrarianDTOs;
+using LibraryManagementSystem.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagementSystem.Services.Interfaces
 {
@@ -15,5 +18,27 @@ namespace LibraryManagementSystem.Services.Interfaces
 
         Task<string> UnblockStudentAsync(UpdateStudentStatusDTO updateStudentStatusDto);
 
-    }
+        Task<string> GetActiveUsersAsync();
+
+        Task<string> GetBlockedUsersAsync();
+
+        Task<string> GetUserCountAsync();
+
+        Task<List<AllUsersDTO>> GetAllUsersAsync();
+
+        Task<string> AddBookAsync(Book book);
+
+        Task<string> GetTotalBookCountAsync();
+
+        Task<string> GetTotalAvailableBooksAsync();
+
+        Task<List<GetAllBooksDTO>> GetAllBooksAsync();
+
+        Task<GetBookByIdDTO> GetBookByIdAsync(int Bookid);
+
+        Task<string> DeleteBookAsync(int bookId);
+
+        Task<bool> UpdateBookAsync(UpdateBookDTO dto);
+
+    } 
 }

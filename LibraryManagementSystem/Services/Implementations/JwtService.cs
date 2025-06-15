@@ -18,7 +18,7 @@ namespace LibraryManagementSystem.Services.Implementations
         {
             _configuration = configuration;
             _dataContext = dataContext;
-            _secretKey = configuration["Jwt:Secret"];
+            _secretKey = configuration["Jwt:SecretKey"];
             _expiryMinutes = Convert.ToInt32(configuration["Jwt:ExpiryMinutes"]);
         }
 
@@ -26,7 +26,8 @@ namespace LibraryManagementSystem.Services.Implementations
         {
             await Task.Yield();
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("IshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyani");
+            var keyBytes = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]!);
+            var key = new SymmetricSecurityKey(keyBytes);
 
             var ExpiryMinutes = Convert.ToDouble(_configuration.GetSection("Jwt:ExpiryMinutes").Value);
 
@@ -47,7 +48,7 @@ namespace LibraryManagementSystem.Services.Implementations
                 Issuer = _configuration.GetSection("Jwt:Issuer").Value,
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(ExpiryMinutes),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             Console.WriteLine($"Generated Token: {tokenHandler.WriteToken(token)}");

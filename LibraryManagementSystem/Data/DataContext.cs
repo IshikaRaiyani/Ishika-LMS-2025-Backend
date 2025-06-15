@@ -13,6 +13,10 @@ namespace LibraryManagementSystem.Data
         
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Book> Books { get; set; }
+
+        public DbSet<BookManagement> BookManagement { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +38,17 @@ namespace LibraryManagementSystem.Data
                 .Property(u => u.NoofBooks)
                 .HasDefaultValue(0);
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<BookManagement>()
+           .ToTable(l => l.HasCheckConstraint("CK_BookManagement_RequestType", "RequestType IN ('BorrowRequested','Borrowed','ReturnRequested', 'Returned')"));
+
+            modelBuilder.Entity<BookManagement>()
+
+           .ToTable(l => l.HasCheckConstraint("CK_BookManagement_BorrowStatus", "BorrowStatus IN ('Pending', 'Approved','Rejected')"));
+
+            modelBuilder.Entity<BookManagement>()
+
+          .ToTable(l => l.HasCheckConstraint("CK_BookManagement_ReturnStatus", "ReturnStatus IN ('Pending', 'Approved','Rejected','None')"));
         }
     }
 }

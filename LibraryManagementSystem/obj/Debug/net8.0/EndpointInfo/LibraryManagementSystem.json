@@ -67,33 +67,22 @@
         }
       }
     },
-    "/AddAdminController/DeleteLibrarian": {
+    "/AddAdminController/DeleteLibrarian/{userId}": {
       "delete": {
         "tags": [
           "Admin"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "integer",
-                "format": "int32"
-              }
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -102,7 +91,7 @@
       }
     },
     "/AddAdminController/BlockStudent": {
-      "put": {
+      "patch": {
         "tags": [
           "Admin"
         ],
@@ -133,7 +122,7 @@
       }
     },
     "/AddAdminController/UnblockStudent": {
-      "put": {
+      "patch": {
         "tags": [
           "Admin"
         ],
@@ -152,6 +141,354 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateStudentStatusDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetActiveUsers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetBlockedUsers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetUserCount": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetAllUsers": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/AddBook": {
+      "post": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Book"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetTotalBookCount": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetTotalAvailableBooks": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetAllBooks": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllBooksDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllBooksDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllBooksDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetBookByid": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "Bookid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBookByIdDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBookByIdDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBookByIdDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AddAdminController/DeleteBooks/{bookId}": {
+      "delete": {
+        "tags": [
+          "Admin"
+        ],
+        "parameters": [
+          {
+            "name": "bookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/AddAdminController/UpdateBookById": {
+      "put": {
+        "tags": [
+          "Admin"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/LibrarianController/ApproveBorrowRequest": {
+      "put": {
+        "tags": [
+          "Librarian"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/LibrarianController/RejectBorrowRequest": {
+      "put": {
+        "tags": [
+          "Librarian"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/LibrarianController/GetPendingBorrowRequests": {
+      "get": {
+        "tags": [
+          "Librarian"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/LibrarianController/ApproveReturnRequest": {
+      "put": {
+        "tags": [
+          "Librarian"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
               }
             }
           }
@@ -183,6 +520,137 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/RegisterStudentDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/StudentController/BorrowBookRequest": {
+      "post": {
+        "tags": [
+          "Student"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowBookRequestDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowBookRequestDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BorrowBookRequestDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/StudentController/GetBookingHistory": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "parameters": [
+          {
+            "name": "Userid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/StudentController/GetPendingRequest": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "parameters": [
+          {
+            "name": "Userid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/StudentController/CurrentBooking": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "parameters": [
+          {
+            "name": "Userid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/StudentController/ReturnBookRequest": {
+      "put": {
+        "tags": [
+          "Student"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "integer",
+                "format": "int32"
               }
             }
           }
@@ -344,6 +812,201 @@
         },
         "additionalProperties": false
       },
+      "Book": {
+        "required": [
+          "author",
+          "availableCopies",
+          "genre",
+          "title",
+          "totalCopies"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "author": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "genre": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "totalCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isBestSelling": {
+            "type": "boolean"
+          },
+          "addedOn": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BorrowBookRequestDTO": {
+        "required": [
+          "bookId",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requestType": {
+            "type": "string",
+            "nullable": true
+          },
+          "borrowRequestDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "borrowStatus": {
+            "type": "string",
+            "nullable": true
+          },
+          "returnStatus": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetAllBooksDTO": {
+        "required": [
+          "author",
+          "availableCopies",
+          "genre",
+          "title",
+          "totalCopies"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "author": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "genre": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "totalCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isBestSelling": {
+            "type": "boolean"
+          },
+          "addedOn": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetBookByIdDTO": {
+        "required": [
+          "author",
+          "availableCopies",
+          "genre",
+          "title",
+          "totalCopies"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "author": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "genre": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "totalCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isBestSelling": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "RegisterStudentDTO": {
         "required": [
           "email",
@@ -404,6 +1067,53 @@
           "email": {
             "minLength": 1,
             "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateBookDTO": {
+        "required": [
+          "author",
+          "availableCopies",
+          "genre",
+          "title",
+          "totalCopies"
+        ],
+        "type": "object",
+        "properties": {
+          "bookId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "author": {
+            "maxLength": 100,
+            "minLength": 0,
+            "type": "string"
+          },
+          "genre": {
+            "maxLength": 50,
+            "minLength": 0,
+            "type": "string"
+          },
+          "totalCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "availableCopies": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "isBestSelling": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false

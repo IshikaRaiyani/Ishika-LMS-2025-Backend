@@ -5,12 +5,15 @@ namespace LibraryManagementSystem.Models
 {
     public class User
     {
+        
+
+        
         [Key]
         public int UserId { get; set; }
         public string RoleName { get; set; }
 
         [Required(ErrorMessage="Full Name is required.")]
-        [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters")]
+        [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters")]    
         public string FullName { get; set; }
 
         [Required(ErrorMessage = "Email is required")]
@@ -26,9 +29,6 @@ namespace LibraryManagementSystem.Models
         public string Status { get; set; }   
 
         public int NoofBooks { get; set; }
-
-        
-        
 
     }
 }

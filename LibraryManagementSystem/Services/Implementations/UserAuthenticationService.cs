@@ -29,12 +29,15 @@ namespace LibraryManagementSystem.Services.Implementations
         public async Task<AccessTokenResponseDTO?> LogInUserAsync(UserLoginDTO userDto)
         {
             try
-            {
+                {
                 if (userDto == null)
                 {
                     Console.WriteLine("Please Enter the valid User object!");
                     return null;
                 }
+
+
+
 
                 var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == userDto.Email);
 
@@ -42,6 +45,11 @@ namespace LibraryManagementSystem.Services.Implementations
                 {
                     Console.WriteLine("Email Mismatch. Please enter a valid email address!");
                     return null;
+                }
+
+                if(user.RoleName=="Student" && user.Status=="Blocked")
+                {
+                    throw new Exception("Your account is blocked. Please contact your admin!");
                 }
 
                 var sha256 = SHA256.Create();
@@ -59,7 +67,7 @@ namespace LibraryManagementSystem.Services.Implementations
                 {
                     "admin" => "Admin login successfully",
                     "student" => "Student login successfully",
-                    "Librarian" => "Librarian login successfully",
+                    "librarian" => "Librarian login successfully",
 
                 };
 
@@ -68,8 +76,9 @@ namespace LibraryManagementSystem.Services.Implementations
                     AccessToken = tokens,
                     Message = message,
                     FullName = user.FullName,
-                    Email= user.Email,
-                    RoleName = user.RoleName
+                    Email = user.Email,
+                    RoleName = user.RoleName,
+                    UserId = user.UserId
 
 
                 };
