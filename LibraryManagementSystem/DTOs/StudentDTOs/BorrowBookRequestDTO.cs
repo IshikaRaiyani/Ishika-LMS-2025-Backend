@@ -19,12 +19,12 @@ namespace LibraryManagementSystem.DTOs.StudentDTOs
 
         //public Book Book { get; set; }
 
-        public string RequestType { get; set; }
+        public string? RequestType { get; set; }
 
-        public DateOnly BorrowRequestDate { get; set; }
+        public DateOnly? BorrowRequestDate { get; set; }
         
-        public string BorrowStatus { get; set; }
+        public string? BorrowStatus { get; set; }
 
-        public string ReturnStatus { get; set; }
+        public string? ReturnStatus { get; set; }
     }
 }

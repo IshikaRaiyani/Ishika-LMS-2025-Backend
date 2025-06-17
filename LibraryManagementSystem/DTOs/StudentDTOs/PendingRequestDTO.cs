@@ -8,9 +8,9 @@
 
         public DateOnly BorrowRequestDate { get; set; }
 
-        public DateOnly BorrowDate { get; set; }
+        public DateOnly? BorrowDate { get; set; }
 
-        public DateOnly DueDate { get; set; }
+        public DateOnly? DueDate { get; set; }
 
         public string BorrowStatus { get; set; }
 

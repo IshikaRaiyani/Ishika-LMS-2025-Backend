@@ -2,6 +2,7 @@
 using LibraryManagementSystem.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
 using LibraryManagementSystem.DTOs.StudentDTOs;
+using LibraryManagementSystem.DTOs.BookDTOs;
 
 namespace LibraryManagementSystem.Repositories.Interfaces
 
@@ -13,19 +14,31 @@ namespace LibraryManagementSystem.Repositories.Interfaces
 
         Task<bool> isBookExistingAsync(int userid, int bookid, string borrowStatus, string borrowStatus1, string returnStatus, string returnStatus1);
 
-         Task<int> GetUserBooks(int UserId);
+         Task<int> GetUserBooksAsync(int UserId);
 
         Task BorrowBookRequestAsync(BookManagement bookManagement);
 
         Task<User> GetUserByIDAsync(int userid);
 
-        Task<List<BookingHistoryDTO>> GetBookingHistory(int UserId);
+        Task<List<BookingHistoryDTO>> GetBookingHistoryAsync(int UserId);
 
-        Task<List<PendingRequestDTO>> GetPendingRequest(int UserId);
+        Task<List<PendingRequestDTO>> GetPendingRequestAsync(int UserId);
 
         Task<List<CurrentBookingDTO>> CurrentBookingAsync(int UserId);
 
         Task<bool> ReturnBookRequestAsync(BookManagement bookManagement);
+
+        Task AddtoWishlistAsync(Studentwishlist studentwishlist);
+
+        Task<bool> IsBookInWishlistAsync(int userId, int bookId);
+
+        Task<List<Studentwishlist>> GetUserWishlistsAsync(int userId);
+
+        Task<bool> RemoveFromWishlistAsync(int wishlistId);
+
+        Task<List<GetAllBooksDTO>> GetBestSellingBooksAsync();
+
+        Task<List<GetAllBooksDTO>> GetNewArrivalsAsync();
 
 
     }

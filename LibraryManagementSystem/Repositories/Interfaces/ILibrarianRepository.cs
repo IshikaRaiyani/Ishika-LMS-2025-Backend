@@ -16,5 +16,7 @@ namespace LibraryManagementSystem.Repositories.Interfaces
         Task<List<GetPendingBorrowRequestsDTO>> GetPendingBorrowRequestsAsync();
 
         Task<bool> ApproveReturnRequestAsync(BookManagement bookManagement);
+
+        Task<List<BookManagement>> GetPendingReturnRequestsAsync();
     }
 }

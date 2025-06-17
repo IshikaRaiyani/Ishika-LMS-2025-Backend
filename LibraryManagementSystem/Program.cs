@@ -27,6 +27,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<ILibrarianRepository, LibrarianRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 
 //Registering the service
@@ -35,6 +36,8 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IUserAuthenticationService, UserAuthenticationService>();
 builder.Services.AddScoped<ILibrarianService, LibrarianService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");

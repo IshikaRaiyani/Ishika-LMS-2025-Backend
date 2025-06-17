@@ -17,13 +17,15 @@ namespace LibraryManagementSystem.Services.Implementations
         private readonly DataContext _context;
         private readonly JwtService _jwtService;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
 
-        public UserAuthenticationService(DataContext context, JwtService jwtService, IConfiguration configuration)
+        public UserAuthenticationService(DataContext context, JwtService jwtService, IConfiguration configuration, IEmailService emailService)
         {
             _context = context;
             _jwtService = jwtService;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<AccessTokenResponseDTO?> LogInUserAsync(UserLoginDTO userDto)
@@ -109,27 +111,39 @@ namespace LibraryManagementSystem.Services.Implementations
                 //generating JWt reset token
                     var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes("IshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyani");
-                var expiryTime = DateTime.UtcNow.AddMinutes(1);
+                //var expiryTime = DateTime.UtcNow.AddMinutes(1);
 
-                var claims = new List<Claim>
-                {
-                  new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                  new Claim(ClaimTypes.Email, user.Email),
-                  new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expiryTime).ToUnixTimeSeconds().ToString())
-                };
+                //var claims = new List<Claim>
+                //{
+                //  new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                //  new Claim(ClaimTypes.Email, user.Email),
+                //  new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expiryTime).ToUnixTimeSeconds().ToString())
+                //};
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
-                    Subject = new ClaimsIdentity(claims),
-                    Expires = expiryTime,
+                    Subject = new ClaimsIdentity(new[] { new Claim("nameid", user.UserId.ToString()) }),
+                    Expires = DateTime.UtcNow.AddMinutes(15),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
 
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                string resetToken = tokenHandler.WriteToken(token);
-                
+                var token = tokenHandler.CreateToken(tokenDescriptor);  
+                var tokenstring = tokenHandler.WriteToken(token);
 
-                return resetToken;
+                var resetLink = $"http://localhost:4200/auth/reset-password?token={tokenstring}";
+
+
+                // Email content
+                var subject = "Reset Your Password";
+                var message = $@"
+        <h3>Hello,</h3>
+        <p>Please click the link below to reset your password:</p>
+        <a href='{resetLink}'>{resetLink}</a>
+        <p>This link is valid for 15 minutes.</p>";
+
+                await _emailService.SendEmailAsync(userEmail, "Password Reset Request", $"Click the link to reset your password: <a href='{resetLink}'>Reset Password</a>");
+
+                return "Reset link sent successfully.";
             }
             catch (Exception ex)
             {

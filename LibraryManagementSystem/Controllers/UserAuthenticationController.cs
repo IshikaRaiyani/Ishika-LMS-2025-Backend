@@ -57,7 +57,7 @@ namespace LibraryManagementSystem.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("ResetPassword")]
+        [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDto)
         {
             if (resetPasswordDto == null)
@@ -72,7 +72,7 @@ namespace LibraryManagementSystem.Controllers
                 return Ok(new { message = result });
             }
             else
-            {
+            {   
                 return BadRequest(new { error = result });
             }
         }

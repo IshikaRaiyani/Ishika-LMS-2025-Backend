@@ -23,7 +23,7 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
         public async Task<int> GetUserFineAsync(int UserId)
         {
-            return await _context.BookManagement.Where(t => t.UserId == UserId).SumAsync(t => t.Fine);
+            return await _context.BookManagement.Where(t => t.UserId == UserId).SumAsync(t => t.Fine);  
         }
 
         public async Task<bool> ApproveBorrowRequestAsync(BookManagement bookManagement)
@@ -51,6 +51,7 @@ namespace LibraryManagementSystem.Repositories.Implementations
                     .Include(br => br.Book)
                     .Select(br => new GetPendingBorrowRequestsDTO
                     {
+                        TransactionId = br.TransactionId,
                         UserId = br.UserId,
                         FullName = br.User.FullName,
                         NoofBooks = br.User.NoofBooks,
@@ -60,6 +61,25 @@ namespace LibraryManagementSystem.Repositories.Implementations
                         BorrowRequestDate = br.BorrowRequestDate,
                         BorrowStatus = br.BorrowStatus
                     })
+                    .ToListAsync();
+
+                return pendingRequests;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching pending borrow requests", ex);
+            }
+        }
+
+        public async Task<List<BookManagement>> GetPendingReturnRequestsAsync()
+        {
+            try
+            {
+                var pendingRequests = await _context.BookManagement
+                    .Where(br => br.ReturnStatus == "Pending")
+                    .Include(br => br.User)
+                    .Include(br => br.Book)
+                     
                     .ToListAsync();
 
                 return pendingRequests;

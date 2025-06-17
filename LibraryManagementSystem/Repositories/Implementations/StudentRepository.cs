@@ -1,4 +1,5 @@
 ﻿using LibraryManagementSystem.Data;
+using LibraryManagementSystem.DTOs.BookDTOs;
 using LibraryManagementSystem.DTOs.StudentDTOs;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Repositories.Interfaces;
@@ -28,7 +29,7 @@ namespace LibraryManagementSystem.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetUserBooks(int UserId)
+        public async Task<int> GetUserBooksAsync(int UserId)
         {
             var users = await _context.Users.Where(u => u.UserId == UserId).Select(u => u.NoofBooks).FirstOrDefaultAsync();
             return users;
@@ -56,31 +57,36 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
         }
 
-        public async Task<List<BookingHistoryDTO>> GetBookingHistory(int UserId)
+        public async Task<List<BookingHistoryDTO>> GetBookingHistoryAsync(int UserId)
         {
-            return await _context.BookManagement.Where(t => t.UserId == UserId && t.BorrowStatus=="Approved" && t.ReturnStatus=="Approved").Select(t => new BookingHistoryDTO
+            return await _context.BookManagement.Where(t => t.UserId == UserId && (t.BorrowStatus=="Approved" || t.BorrowStatus == "Rejected") && (t.ReturnStatus=="Approved" || t.ReturnStatus == "Rejected")).Select(t => new BookingHistoryDTO
             {
                 Title = t.Book.Title,
                 Author = t.Book.Author,
                 Genre = t.Book.Genre,
-                BorrowDate = t.BorrowDate.Value,
-                ReturnDate = t.ReturnDate.Value,
+                BorrowStatus = t.BorrowStatus,
+                BorrowDate = t.BorrowDate,
+                ReturnStatus = t.ReturnStatus,
+                ReturnDate = t.ReturnDate,
+
                 Fine = t.Fine,
             }).ToListAsync();
 
             
         }
 
-        public async Task<List<PendingRequestDTO>> GetPendingRequest(int UserId)
+        public async Task<List<PendingRequestDTO>> GetPendingRequestAsync(int UserId)
         {
-            return await _context.BookManagement.Where(t => t.UserId == UserId && (t.BorrowStatus == "Pending" || t.BorrowStatus == "Approved") && t.ReturnStatus == "Pending").Select(t => new PendingRequestDTO
+            return await _context.BookManagement.Where(t => t.UserId == UserId && (t.BorrowStatus == "Pending" || t.ReturnStatus == "Pending")).Select(t => new PendingRequestDTO
             {
                 Title = t.Book.Title,
                 Author = t.Book.Author,
                 BorrowRequestDate = t.BorrowRequestDate,
-                BorrowDate = t.BorrowDate ?? DateOnly.MinValue,
 
-                DueDate = t.DueDate ?? DateOnly.MinValue,
+               
+                BorrowDate = t.BorrowDate,
+
+                DueDate = t.DueDate,
                 BorrowStatus = t.BorrowStatus,
                 ReturnStatus= t.ReturnStatus
             }).ToListAsync();
@@ -111,6 +117,118 @@ namespace LibraryManagementSystem.Repositories.Implementations
             return result > 0;
         }
 
+        public async Task AddtoWishlistAsync(Studentwishlist studentwishlist)
+        {
+            await _context.studentwishlists.AddAsync(studentwishlist);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsBookInWishlistAsync(int userId, int bookId)
+        {
+
+            return await _context.studentwishlists.AnyAsync(w => w.UserId == userId && w.BookId == bookId);
+        }
+
+        public async Task<List<Studentwishlist>> GetUserWishlistsAsync(int userId)
+        {
+            return await _context.studentwishlists.Where(t => t.UserId == userId).Select(t => new Studentwishlist
+            {
+                WishlistId = t.WishlistId,
+                UserId = t.UserId,
+                BookId = t.BookId,
+                AddedOn = t.AddedOn,
+                Book = new Book
+                {
+                    Title = t.Book.Title,
+                    Author = t.Book.Author,
+                    Genre = t.Book.Genre,
+                    Description = t.Book.Description,
+                    ImageUrl = t.Book.ImageUrl,
+                    
+                   
+                }
+
+            }).ToListAsync();
+
+        }
+
+        public async Task<bool> RemoveFromWishlistAsync(int wishlistId)
+        {
+            var wishlistItem = await _context.studentwishlists
+     .FirstOrDefaultAsync(w => w.WishlistId == wishlistId);
+
+
+            if (wishlistItem == null)
+            {
+                return false; 
+            }
+
+            _context.studentwishlists.Remove(wishlistItem);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+
+        public async Task<List<GetAllBooksDTO>> GetBestSellingBooksAsync()
+        {
+            try
+            {
+                var allBooks = await _context.Books.Where(book=>book.IsBestSelling).Select(book => new GetAllBooksDTO
+                {
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    TotalCopies = book.TotalCopies,
+                    AvailableCopies = book.AvailableCopies,
+                    Description = book.Description,
+                    IsBestSelling = book.IsBestSelling,
+                    AddedOn = book.AddedOn,
+                    ImageUrl = book.ImageUrl
+                }).AsNoTracking().ToListAsync();
+
+                return allBooks;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Books Details Not Found!!");
+            }
+
+
+        }
+
+        public async Task<List<GetAllBooksDTO>> GetNewArrivalsAsync()
+        {
+            try
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+                var last7days = today.AddDays(-7);
+                var allBooks = await _context.Books.Where(book => book.AddedOn >= last7days && book.AddedOn <= today).Select(book => new GetAllBooksDTO
+                {
+                   
+                    BookId = book.BookId,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Genre = book.Genre,
+                    TotalCopies = book.TotalCopies,
+                    AvailableCopies = book.AvailableCopies,
+                    Description = book.Description,
+                    IsBestSelling = book.IsBestSelling,
+                    AddedOn = book.AddedOn,
+                    ImageUrl = book.ImageUrl
+                }).AsNoTracking().ToListAsync();
+
+                return allBooks;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Books Details Not Found!!");
+            }
+
+
+        }
 
     }
 

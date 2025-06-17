@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using LibraryManagementSystem.DTOs.BookDTOs;
 using LibraryManagementSystem.DTOs.StudentDTOs;
 using LibraryManagementSystem.DTOs.UserDTOs;
 using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Repositories.Implementations;
 using LibraryManagementSystem.Repositories.Interfaces;
 using LibraryManagementSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Services.Implementations
@@ -64,7 +66,7 @@ namespace LibraryManagementSystem.Services.Implementations
             try
             {
 
-                var noofbooks = await _studentRepository.GetUserBooks(borrowBookRequestDTO.UserId);
+                var noofbooks = await _studentRepository.GetUserBooksAsync(borrowBookRequestDTO.UserId);
                 var userid = borrowBookRequestDTO.UserId;
                 var bookid = borrowBookRequestDTO.BookId;
                 var borrowStatus = "Approved";
@@ -73,25 +75,33 @@ namespace LibraryManagementSystem.Services.Implementations
                 var returnStatus1 = "Pending";
                 var isBookExisting = await _studentRepository.isBookExistingAsync(userid, bookid, borrowStatus, borrowStatus1, returnStatus,returnStatus1);
                 //Console.WriteLine(noofbooks);
-                if (noofbooks < 3 && !isBookExisting)
+                if (noofbooks < 3 )
                 {
-                    
-                    var BorrowBookRequest = new BookManagement
+                    if (!isBookExisting)
                     {
+                        var BorrowBookRequest = new BookManagement
+                        {
 
-                        UserId = borrowBookRequestDTO.UserId,
-                        BookId = borrowBookRequestDTO.BookId,
-                        RequestType = "BorrowRequested",
-                        BorrowRequestDate = DateOnly.FromDateTime(DateTime.Today),
-                        BorrowStatus = "Pending",
-                        ReturnStatus = "None"
-                    };
-                    await _studentRepository.BorrowBookRequestAsync(BorrowBookRequest);
-                    return "Borrow Request Submitted Successfully";
+                            UserId = borrowBookRequestDTO.UserId,
+                            BookId = borrowBookRequestDTO.BookId,
+                            RequestType = "BorrowRequested",
+                            BorrowRequestDate = DateOnly.FromDateTime(DateTime.Today),
+                            BorrowStatus = "Pending",
+                            ReturnStatus = "None"
+                        };
+                        await _studentRepository.BorrowBookRequestAsync(BorrowBookRequest);
+                        return "Borrow Request Submitted Successfully";
+
+                    }
+                    else
+                    {
+                        return "You have already borrowed this book!";
+                    }
+                    
                 }
                 else
                 {
-                    return "You already have borrowed this book or you have issued maximum number of books!!";
+                    return "You have issued maximum number of books. You cad add this book to your wishlist..";
                 }
             }
             catch (Exception ex)
@@ -101,16 +111,16 @@ namespace LibraryManagementSystem.Services.Implementations
 
         }
 
-        public async Task<List<BookingHistoryDTO>> GetBookingHistory(int UserId)
+        public async Task<List<BookingHistoryDTO>> GetBookingHistoryAsync(int UserId)
         {
-            return await _studentRepository.GetBookingHistory(UserId);
+            return await _studentRepository.GetBookingHistoryAsync(UserId);
 
 
         }
 
-        public async Task<List<PendingRequestDTO>> GetPendingRequest(int UserId)
+        public async Task<List<PendingRequestDTO>> GetPendingRequestAsync(int UserId)
         {
-            return await _studentRepository.GetPendingRequest(UserId);
+            return await _studentRepository.GetPendingRequestAsync(UserId);
 
 
         }
@@ -143,6 +153,93 @@ namespace LibraryManagementSystem.Services.Implementations
             return "Something went wrong!";
         }
 
+        public async Task<string> AddtoWishlistAsync(int userId, int bookId)
+        {
+            try 
+            {
+                if (await _studentRepository.IsBookInWishlistAsync(userId, bookId))
+                {
+                    Console.WriteLine($"Checking wishlist for UserId: {userId}, BookId: {bookId}");
+
+                    return "This book is already in your wishlist.";
+                }
+                var wishlist = new Studentwishlist
+                {
+                    UserId = userId,
+                    BookId = bookId,
+                    AddedOn = DateOnly.FromDateTime(DateTime.Today)
+
+                };
+
+                await _studentRepository.AddtoWishlistAsync(wishlist);
+                return "Book successfully added to wishlist";
+            }
+            catch (Exception ex)
+            {
+                return ex.InnerException?.Message ?? ex.Message;
+            }
+
+
+        }
+
+        public async Task<List<Studentwishlist>> GetUserWishlistsAsync(int userId)
+        {
+            try
+            {
+                var wishlists = await _studentRepository.GetUserWishlistsAsync(userId);
+
+                return wishlists;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error fetching user wishlists", ex);
+            }
+        }
+
+        public async Task<bool> RemoveFromWishlistAsync(int wishlistId)
+        {
+            return await _studentRepository.RemoveFromWishlistAsync(wishlistId);
+        }
+
+        public async Task<List<GetAllBooksDTO>> GetBestSellingBooksAsync()
+        {
+            try
+            {
+                var allBooks = await _studentRepository.GetBestSellingBooksAsync();
+
+                if (allBooks == null)
+                {
+                    throw new Exception("Books Details Not Found!!");
+                }
+                return allBooks;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("Something went wrong");
+            }
+
+        }
+
+        public async Task<List<GetAllBooksDTO>> GetNewArrivalsAsync()
+        {
+            try
+            {
+                var allBooks = await _studentRepository.GetNewArrivalsAsync();
+
+                if (allBooks == null)
+                {
+                    throw new Exception("Books Details Not Found!!");
+                }
+                return allBooks;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("Something went wrong");
+            }
+
+        }
 
     }
 

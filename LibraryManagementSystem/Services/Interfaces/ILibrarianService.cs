@@ -13,6 +13,10 @@ namespace LibraryManagementSystem.Services.Interfaces
 
         Task<List<GetPendingBorrowRequestsDTO>> GetPendingBorrowRequestsAsync();
 
+        Task<List<GetPendingReturnRequestDTO>> GetPendingReturnRequestsAsync();
+
+
         Task<string> ApproveReturnRequestAsync(int TransactionId);
+
     }
 }

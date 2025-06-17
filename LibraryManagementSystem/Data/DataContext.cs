@@ -17,6 +17,10 @@ namespace LibraryManagementSystem.Data
 
         public DbSet<BookManagement> BookManagement { get; set; }
 
+        public DbSet<Studentwishlist> studentwishlists { get; set; }
+
+
+        public DbSet<StudentNotification> studentNotifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

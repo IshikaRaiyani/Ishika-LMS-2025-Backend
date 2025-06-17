@@ -1,5 +1,7 @@
-﻿using LibraryManagementSystem.DTOs.StudentDTOs;
+﻿using LibraryManagementSystem.DTOs.BookDTOs;
+using LibraryManagementSystem.DTOs.StudentDTOs;
 using LibraryManagementSystem.DTOs.UserDTOs;
+using LibraryManagementSystem.Models;
 
 
 namespace LibraryManagementSystem.Services.Interfaces
@@ -10,12 +12,23 @@ namespace LibraryManagementSystem.Services.Interfaces
 
         Task<string> BorrowBookRequestAsync(BorrowBookRequestDTO borrowBookRequestDTO);
 
-        Task<List<BookingHistoryDTO>> GetBookingHistory(int UserId);
+        Task<List<BookingHistoryDTO>> GetBookingHistoryAsync(int UserId);
 
-        Task<List<PendingRequestDTO>> GetPendingRequest(int UserId);
+        Task<List<PendingRequestDTO>> GetPendingRequestAsync(int UserId);
 
         Task<List<CurrentBookingDTO>> CurrentBookingAsync(int UserId);
 
         Task<string> ReturnBookRequestAsync(int TransactionId);
+
+        Task<string> AddtoWishlistAsync(int userId, int bookId);
+
+        Task<List<Studentwishlist>> GetUserWishlistsAsync(int userId);
+
+        Task<bool> RemoveFromWishlistAsync(int wishlistId);
+
+        Task<List<GetAllBooksDTO>> GetBestSellingBooksAsync();
+
+        Task<List<GetAllBooksDTO>> GetNewArrivalsAsync();
     }
+    
 }

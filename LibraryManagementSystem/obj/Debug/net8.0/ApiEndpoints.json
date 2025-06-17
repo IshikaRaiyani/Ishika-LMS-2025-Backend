@@ -277,6 +277,16 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
+    "Method": "GetPendingReturnRequestsAsync",
+    "RelativePath": "LibrarianController/GetPendingReturnRequests",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.LibrarianController",
     "Method": "RejectBorrowRequestAsync",
     "RelativePath": "LibrarianController/RejectBorrowRequest",
     "HttpMethod": "PUT",
@@ -287,6 +297,59 @@
         "Name": "TransactionId",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.NotificationController",
+    "Method": "GetUnreadNotificationsAsync",
+    "RelativePath": "NotificationController/GetUnreadNotifications",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.NotificationController",
+    "Method": "NotificationMarkAsReadAsync",
+    "RelativePath": "NotificationController/NotificationMarkAsRead",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "NotificationId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "AddtoWishlistAsync",
+    "RelativePath": "StudentController/AddtoWishlist",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "bookId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -325,7 +388,27 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
-    "Method": "GetBookingHistory",
+    "Method": "GetBestSellingBooksAsync",
+    "RelativePath": "StudentController/GetBestSellingBooks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[LibraryManagementSystem.DTOs.BookDTOs.GetAllBooksDTO, LibraryManagementSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "GetBookingHistoryAsync",
     "RelativePath": "StudentController/GetBookingHistory",
     "HttpMethod": "GET",
     "IsController": true,
@@ -341,7 +424,27 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
-    "Method": "GetPendingRequest",
+    "Method": "GetNewArrivalsAsync",
+    "RelativePath": "StudentController/GetNewArrivals",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[LibraryManagementSystem.DTOs.BookDTOs.GetAllBooksDTO, LibraryManagementSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "GetPendingRequestAsync",
     "RelativePath": "StudentController/GetPendingRequest",
     "HttpMethod": "GET",
     "IsController": true,
@@ -349,6 +452,22 @@
     "Parameters": [
       {
         "Name": "Userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "GetUserWishlistsAsync",
+    "RelativePath": "StudentController/GetUserWishlists",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": false
       }
@@ -367,6 +486,22 @@
         "Name": "UserAdminDto",
         "Type": "LibraryManagementSystem.DTOs.UserDTOs.RegisterStudentDTO",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "RemoveFromWishlistAsync",
+    "RelativePath": "StudentController/RemoveFromWishlist",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "wishlistId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -422,7 +557,7 @@
   {
     "ContainingType": "LibraryManagementSystem.Controllers.UserAuthenticationController",
     "Method": "ResetPassword",
-    "RelativePath": "UserAuthenticationController/ResetPassword",
+    "RelativePath": "UserAuthenticationController/reset-password",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

@@ -26,9 +26,18 @@ namespace LibraryManagementSystem.Controllers
         public async Task<IActionResult> ApproveBorrowRequestAsync([FromBody] int TransactionId)
         {
             var response = await _userServices.ApproveBorrowRequestAsync(TransactionId);
-            if (response == null) return NotFound("Book not found.");
+            if (response == null || response == "Book not found." || response == "User not found." || response == "Transaction not found")
+            {
+                return NotFound(response);
+            }
 
-            return Ok("Borrow Request Approved Successfully.");
+            if (response.Contains("cannot be approved"))
+            {
+                return Conflict(response); 
+            }
+
+            return Ok("Borrow Request Approved Successfully");
+           
         }
 
         [HttpPut("RejectBorrowRequest")]
@@ -61,6 +70,17 @@ namespace LibraryManagementSystem.Controllers
             return Ok("Return Request Approved Successfully.");
         }
 
+        [HttpGet("GetPendingReturnRequests")]
+        public async Task<IActionResult> GetPendingReturnRequestsAsync()
+        {
+            var response = await _userServices.GetPendingReturnRequestsAsync();
+
+            if (response == null)
+            {
+                return BadRequest("No pending return request found!");
+            }
+            return Ok(response);
+        }
 
 
     }  

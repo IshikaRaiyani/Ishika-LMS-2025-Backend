@@ -4,8 +4,9 @@ namespace LibraryManagementSystem.DTOs.LibrarianDTOs
 {
     public class GetPendingBorrowRequestsDTO
     {
+        public int TransactionId { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; }
+        
 
         public string FullName { get; set; }
 
@@ -13,13 +14,15 @@ namespace LibraryManagementSystem.DTOs.LibrarianDTOs
 
         public int BookId { get; set; }
 
-        public Book Book { get; set; }
+       
 
         public string Title { get; set; }
 
         public int AvailableCopies { get; set; }
 
         public DateOnly BorrowRequestDate { get; set; }
+
+
 
         public string BorrowStatus { get; set; }
 

@@ -1,4 +1,6 @@
-﻿namespace LibraryManagementSystem.DTOs.StudentDTOs
+﻿using System.Globalization;
+
+namespace LibraryManagementSystem.DTOs.StudentDTOs
 {
     public class BookingHistoryDTO
     {
@@ -8,9 +10,13 @@
 
         public string Genre { get; set; }
 
-        public DateOnly BorrowDate { get; set; }
+        public string BorrowStatus { get; set; }
 
-        public DateOnly ReturnDate { get; set; }
+        public DateOnly? BorrowDate { get; set; }
+
+        public string ReturnStatus { get; set; }
+
+        public DateOnly? ReturnDate { get; set; }
 
         public int Fine {  get; set; }
     }

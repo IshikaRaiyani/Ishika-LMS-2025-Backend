@@ -1,8 +1,10 @@
 ﻿using System.Transactions;
 using LibraryManagementSystem.DTOs.LibrarianDTOs;
 using LibraryManagementSystem.DTOs.StudentDTOs;
+using LibraryManagementSystem.Models;
 using LibraryManagementSystem.Repositories.Interfaces;
 using LibraryManagementSystem.Services.Interfaces;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace LibraryManagementSystem.Services.Implementations
 {
@@ -10,24 +12,36 @@ namespace LibraryManagementSystem.Services.Implementations
     {
         private readonly ILibrarianRepository _librarianRepository;
         private readonly IAdminRepository _adminRepository;
+        private readonly INotificationRepository _notificationRepository;
 
 
-        public LibrarianService(ILibrarianRepository librarianRepository, IAdminRepository adminRepository)
+        public LibrarianService(ILibrarianRepository librarianRepository, IAdminRepository adminRepository, INotificationRepository notificationRepository)
         {
            _librarianRepository = librarianRepository;
             _adminRepository = adminRepository;
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<string> ApproveBorrowRequestAsync(int TransactionId)
         {
             var transaction = await _librarianRepository.GetTransactionById(TransactionId);
+            if (transaction == null)
+                return "Transaction not found";
+
             var user = await _adminRepository.GetUserByIDAsync(transaction.UserId);
+            if (user == null)
+                return "User not found";
+           
             var book = await _adminRepository.GetBookbyIdAsync(transaction.BookId);
+            if (book == null)
+                return "Book not found";
+
             var today = DateOnly.FromDateTime(DateTime.Today);
 
-
+            
             if (user.NoofBooks == 3)
             {
+                Console.WriteLine(user.NoofBooks);
                 return "Borrow Request cannot be approved because user has already borrowed maximum books";
             }
             transaction.RequestType = "Borrowed";
@@ -42,6 +56,15 @@ namespace LibraryManagementSystem.Services.Implementations
 
             if (await _librarianRepository.ApproveBorrowRequestAsync(transaction))
             {
+                var notification = new StudentNotification
+                {
+                    UserId = user.UserId,
+                    Message = $"Your borrow request for the book {book.Title} has been approved. Please collect it from the library.",
+                    CreatedAt = DateOnly.FromDateTime(DateTime.Today),
+                    IsRead = false
+                };
+
+                await _notificationRepository.AddNotificationAsync(notification);
                 return "Borrow Request Approved Successfully..";
             }
 
@@ -51,26 +74,11 @@ namespace LibraryManagementSystem.Services.Implementations
         public async Task<string> RejectBorrowRequestAsync(int TransactionId)
         {
             var transaction = await _librarianRepository.GetTransactionById(TransactionId);
-            //var user = await _adminRepository.GetUserByIDAsync(transaction.UserId);
-            //var book = await _adminRepository.GetBookbyIdAsync(transaction.BookId);
-            //var fine = await _librarianRepository.GetUserFineAsync(transaction.UserId);
             var today = DateOnly.FromDateTime(DateTime.Today);
 
-
-            //if (user.NoofBooks == 3)
-            //{
-            //    return "Borrow Request cannot be approved because user has already borrowed maximum books";
-            //}
-            //transaction.RequestType = "Borrowed";
-            //transaction.BorrowDate = today;
-            //transaction.DueDate = today.AddDays(15);
             transaction.BorrowStatus = "Rejected";
-            //user.NoofBooks = user.NoofBooks + 1;
-            //book.AvailableCopies = book.AvailableCopies - 1;
-
-            //await _adminRepository.UpdateBookAsync(book);
-            //await _adminRepository.UpdateUserAsync(user);
-
+            transaction.ReturnStatus = "Rejected";
+        
             if (await _librarianRepository.RejectBorrowRequestAsync(transaction))
             {
                 return "Borrow Request Rejected Successfully..";
@@ -78,8 +86,6 @@ namespace LibraryManagementSystem.Services.Implementations
 
             return "Something went wrong!";
         }
-
-
         public async Task<List<GetPendingBorrowRequestsDTO>> GetPendingBorrowRequestsAsync()
         {
             try
@@ -100,6 +106,55 @@ namespace LibraryManagementSystem.Services.Implementations
             }
         }
 
+        public async Task<List<GetPendingReturnRequestDTO>> GetPendingReturnRequestsAsync()
+        {
+            try
+            {
+                var today = DateOnly.FromDateTime(DateTime.Today);
+                var pendingrequest = await _librarianRepository.GetPendingReturnRequestsAsync();
+                var result = new List<GetPendingReturnRequestDTO>();
+                var fine = 0;
+                foreach (var request in pendingrequest)
+                {
+                   if(request.DueDate < request.ReturnDate)
+                    {
+                        TimeSpan returndate = request.ReturnDate.Value.ToDateTime(TimeOnly.MinValue) - request.DueDate.Value.ToDateTime(TimeOnly.MinValue);
+                        int diff = returndate.Days;
+                        fine = diff * 20;
+                    }
+                    else
+                    {
+                        fine = 0;
+                    }
+                    var pendingReturn = new GetPendingReturnRequestDTO
+                    {
+                        TransactionId = request.TransactionId,
+                       UserId = request.UserId,
+                        BookId = request.BookId,
+                        FullName = request.User.FullName,
+                        Title = request.Book.Title,
+                        BorrowDate = (DateOnly)request.BorrowDate,
+                        DueDate = (DateOnly)request.DueDate,
+                       
+                        ApplicableFine = fine
+
+                    };
+                    result.Add(pendingReturn);
+                }
+
+                if (pendingrequest == null)
+                {
+                    throw new Exception("No pending return request found!!");
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("Something went wrong");
+            }
+        }
         public async Task<string> ApproveReturnRequestAsync(int TransactionId)
         {
             var transaction = await _librarianRepository.GetTransactionById(TransactionId);
@@ -120,8 +175,7 @@ namespace LibraryManagementSystem.Services.Implementations
             if (transaction.ReturnStatus == "Pending")
             {
                 transaction.RequestType = "Returned";
-                //transaction.BorrowDate = today;
-                //transaction.DueDate = today.AddDays(15);
+               
                 transaction.ReturnStatus = "Approved";
                 transaction.Fine = fine;
                 user.NoofBooks = user.NoofBooks - 1;

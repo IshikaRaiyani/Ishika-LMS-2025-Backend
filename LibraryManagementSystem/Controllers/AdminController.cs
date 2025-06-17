@@ -163,7 +163,7 @@ namespace LibraryManagementSystem.Controllers
             return Ok(avaiable_books_count);
         }
 
-        [Authorize(Roles ="Admin,Student")]
+        [Authorize(Roles ="Admin,Student,Librarian")]
         [HttpGet("GetAllBooks")]
 
         public async Task<ActionResult<IEnumerable<GetAllBooksDTO>>> GetAllBooksAsync()
