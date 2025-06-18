@@ -8,7 +8,7 @@ namespace LibraryManagementSystem.Controllers
 {
     [ApiController]
     [Route("UserAuthenticationController")]
-    //[Authorize(Roles = "Admin, Librarian, Student")]
+    [Authorize(Roles = "Admin, Librarian, Student")]
     public class UserAuthenticationController : ControllerBase
     {
         private readonly IUserAuthenticationService _userAuthenticationService;
@@ -19,61 +19,83 @@ namespace LibraryManagementSystem.Controllers
         }
 
         
-        [AllowAnonymous]
+       
         [HttpPost("LogInUser")]
         public async Task<IActionResult> LogInUserAsync([FromBody] UserLoginDTO userDto)
 
         {
-
-            var response = await _userAuthenticationService.LogInUserAsync(userDto);
-
-            if (response == null)
+            try
             {
-                return BadRequest("Error in creating Token/ Invalid Email Address / Invalid Password/Student in Block Mode");
+                var response = await _userAuthenticationService.LogInUserAsync(userDto);
+
+                if (response == null)
+                {
+                    return BadRequest("Error in creating Token/ Invalid Email Address / Invalid Password/Student in Block Mode");
+                }
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
             }
 
-            return Ok(response);
         }
 
-        [AllowAnonymous]
         [HttpPost("RequestResetPassword")]
         public async Task<IActionResult> RequestResetPassword([FromBody] ResetRequestPasswordDTO request)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.Email))
+            try
             {
-                return BadRequest("Invalid email address.");
+                if (request == null || string.IsNullOrWhiteSpace(request.Email))
+                {
+                    return BadRequest("Invalid email address.");
+                }
+
+                string result = await _userAuthenticationService.ResetPasswordRequestAsync(request.Email);
+
+                if (result.StartsWith("An error"))
+                {
+                    return BadRequest(new { error = result });
+                }
+
+
+                return Ok(new { resetToken = result });
             }
 
-            string result = await _userAuthenticationService.ResetPasswordRequestAsync(request.Email);
-
-            if (result.StartsWith("An error"))
+            catch (Exception ex)
             {
-                return BadRequest(new { error = result });
+                return StatusCode(500, ex.Message);
             }
 
-         
-            return Ok(new { resetToken = result });
         }
 
 
-        [AllowAnonymous]
+      
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDto)
         {
-            if (resetPasswordDto == null)
+            try
             {
-                return BadRequest("Invalid request payload.");
+                if (resetPasswordDto == null)
+                {
+                    return BadRequest("Invalid request payload.");
+                }
+
+                string result = await _userAuthenticationService.ResetPasswordAsync(resetPasswordDto);
+
+                if (result == "PASSWORD RESET SUCCESSFULLY")
+                {
+                    return Ok(new { message = result });
+                }
+                else
+                {
+                    return BadRequest(new { error = result });
+                }
             }
-
-            string result = await _userAuthenticationService.ResetPasswordAsync(resetPasswordDto);
-
-            if (result == "PASSWORD RESET SUCCESSFULLY")
+            catch (Exception ex)
             {
-                return Ok(new { message = result });
-            }
-            else
-            {   
-                return BadRequest(new { error = result });
+                return StatusCode(500, ex.Message);
             }
         }
     }

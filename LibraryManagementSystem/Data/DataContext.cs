@@ -22,6 +22,8 @@ namespace LibraryManagementSystem.Data
 
         public DbSet<StudentNotification> studentNotifications { get; set; }
 
+       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()

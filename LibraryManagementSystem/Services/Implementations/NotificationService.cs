@@ -2,31 +2,27 @@
 using LibraryManagementSystem.Services.Interfaces;
 using LibraryManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Services.Implementations
 {
     public class NotificationService : INotificationService
     {
         private readonly INotificationRepository _notificationRepository;
-       
+        private readonly IAdminRepository _adminRepository;
+        private readonly IStudentRepository _studentRepository;
+        private readonly IEmailService _emailService;
 
-
-        public NotificationService(INotificationRepository notificationRepository)
+        public NotificationService(INotificationRepository notificationRepository, IAdminRepository adminRepository, IStudentRepository studentRepository, IEmailService emailService)
         {
             _notificationRepository = notificationRepository;
-           
+            _adminRepository = adminRepository;
+            _studentRepository = studentRepository;
+            _emailService = emailService;
+
+
         }
 
-        //public async Task SendNotifICationAsync(int userId, string message)
-        //{
-        //    var notification = new StudentNotification
-        //    {
-        //        UserId = userId,
-        //        Message = message,
-        //        CreatedAt = DateTime.UtcNow,
-        //    };
-        //    await _notificationRepository.AddNotificationAsync(notification);
-        //}
 
         public async Task<List<StudentNotification>> GetUnreadNotificationsAsync(int Userid)
         {
@@ -43,9 +39,40 @@ namespace LibraryManagementSystem.Services.Implementations
 
         public async Task NotificationMarkAsReadAsync(int NotificationId)
         {
-             await _notificationRepository.NotificationMarkAsReadAsync(NotificationId);
+            await _notificationRepository.NotificationMarkAsReadAsync(NotificationId);
 
-            
+
+        }
+
+        public async Task NotifyWishlistUsersIfBookBecomesAvailable(int bookId)
+        {
+            var book = await _adminRepository.GetBookByIDAsync(bookId);
+            if (book == null || book.AvailableCopies <= 0)
+                return;
+
+            var wishlists = await _studentRepository.FindWishlistAsync(bookId);
+
+            foreach (var wishlist in wishlists)
+            {
+                var notification = new StudentNotification
+                {
+                    UserId = wishlist.UserId,
+                    Message = $"📚 Good news! The book '{book.Title}' is now available.You can now borrow it from the library",
+                    CreatedAt = DateTime.Now,
+                    IsRead = false
+
+                };
+
+                await _notificationRepository.AddNotificationAsync(notification);
+
+                await _emailService.SendEmailAsync(
+             wishlist.User.Email,
+             "Wishlist Book is Available..",
+              $"Your wishlisted book '{book.Title}' is now available.Now you can place the borrow request for that book");
+            }
+
+           
+
         }
     }
 }

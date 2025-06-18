@@ -47,6 +47,12 @@ namespace LibraryManagementSystem.Repositories.Interfaces
 
         Task<bool> UpdateUserAsync(User user);
 
+        Task<DashboardDTO> GetDashboardMetricsAsync();
+
+        Task<List<TransactionDetailDTO>> GetAllTransactionsAsync();
+
+       
+
 
 
 

@@ -386,6 +386,47 @@
         }
       }
     },
+    "/AddAdminController/Dashboardmetrics": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDTO"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDTO"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/AddAdminController/GetAllTransactions": {
+      "get": {
+        "tags": [
+          "Admin"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/LibrarianController/ApproveBorrowRequest": {
       "put": {
         "tags": [
@@ -868,6 +909,54 @@
         }
       }
     },
+    "/StudentController/BookRecommendations": {
+      "get": {
+        "tags": [
+          "Student"
+        ],
+        "parameters": [
+          {
+            "name": "userid",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Book"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/UserAuthenticationController/LogInUser": {
       "post": {
         "tags": [
@@ -1104,6 +1193,44 @@
           "returnStatus": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DashboardDTO": {
+        "type": "object",
+        "properties": {
+          "totalTransactions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "booksIssuedThisWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "booksIssuedThisMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mostIssuedBookTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "totalOverdueTransactions": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalFineAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activeUsersThisWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activeUsersThisMonth": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

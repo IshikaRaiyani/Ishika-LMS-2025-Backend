@@ -1,4 +1,6 @@
-﻿using LibraryManagementSystem.Data;
+﻿using System.Globalization;
+using System.Linq;
+using LibraryManagementSystem.Data;
 using LibraryManagementSystem.DTOs.BookDTOs;
 using LibraryManagementSystem.DTOs.StudentDTOs;
 using LibraryManagementSystem.Models;
@@ -154,8 +156,7 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
         public async Task<bool> RemoveFromWishlistAsync(int wishlistId)
         {
-            var wishlistItem = await _context.studentwishlists
-     .FirstOrDefaultAsync(w => w.WishlistId == wishlistId);
+            var wishlistItem = await _context.studentwishlists.FirstOrDefaultAsync(w => w.WishlistId == wishlistId);
 
 
             if (wishlistItem == null)
@@ -229,6 +230,53 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
 
         }
+
+        public async Task<List<Book>> GetRecommendedBooksAsync(int userid)
+        {
+            var history = await _context.BookManagement
+                .Where(bm => bm.UserId == userid)
+                .Include(bm => bm.Book)
+                .Select(bm => new { bm.Book.Genre, bm.Book.Author, bm.BookId })
+                .Distinct()
+                .ToListAsync();
+
+            if (history == null || !history.Any())
+            {
+                var topIssuedBookIds = await _context.BookManagement
+                    .GroupBy(bm => bm.BookId)
+                    .OrderByDescending(g => g.Count())
+                    .Take(5)
+                    .Select(g => g.Key)
+                    .ToListAsync();
+
+                return await _context.Books
+                    .Where(b => topIssuedBookIds.Contains(b.BookId) && b.AvailableCopies > 0)
+                    .ToListAsync();
+            }
+
+            var genres = history.Select(x => x.Genre).Distinct().ToList();
+            var authors = history.Select(x => x.Author).Distinct().ToList();
+            var borrowedBookIds = history.Select(x => x.BookId).ToList();
+
+            return await _context.Books
+                .Where(b =>
+                    (genres.Contains(b.Genre) || authors.Contains(b.Author)) &&
+                    !borrowedBookIds.Contains(b.BookId) && b.AvailableCopies > 0)
+                .ToListAsync();
+        }
+
+
+        public async Task<List<Studentwishlist>> FindWishlistAsync(int bookId)
+        {
+
+            return await _context.studentwishlists.Where(w=> w.BookId == bookId).Include(w => w.User)
+                .ToListAsync();
+            ;
+        }
+
+       
+
+
 
     }
 

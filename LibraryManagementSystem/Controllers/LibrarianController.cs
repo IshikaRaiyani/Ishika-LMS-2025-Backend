@@ -25,61 +25,99 @@ namespace LibraryManagementSystem.Controllers
         [HttpPut("ApproveBorrowRequest")]
         public async Task<IActionResult> ApproveBorrowRequestAsync([FromBody] int TransactionId)
         {
-            var response = await _userServices.ApproveBorrowRequestAsync(TransactionId);
-            if (response == null || response == "Book not found." || response == "User not found." || response == "Transaction not found")
+            try
             {
-                return NotFound(response);
+                var response = await _userServices.ApproveBorrowRequestAsync(TransactionId);
+                if (response == null || response == "Book not found." || response == "User not found." || response == "Transaction not found")
+                {
+                    return NotFound(response);
+                }
+
+                if (response.Contains("cannot be approved"))
+                {
+                    return Conflict(response);
+                }
+
+                return Ok("Borrow Request Approved Successfully");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
             }
 
-            if (response.Contains("cannot be approved"))
-            {
-                return Conflict(response); 
-            }
-
-            return Ok("Borrow Request Approved Successfully");
-           
         }
 
         [HttpPut("RejectBorrowRequest")]
         public async Task<IActionResult> RejectBorrowRequestAsync([FromBody] int TransactionId)
         {
-            var response = await _userServices.RejectBorrowRequestAsync(TransactionId);
-            if (response == null) return NotFound("Book not found.");
+            try
+            {
+                var response = await _userServices.RejectBorrowRequestAsync(TransactionId);
+                if (response == null) return NotFound("Book not found.");
 
-            return Ok("Borrow Request Rejected Successfully.");
+                return Ok("Borrow Request Rejected Successfully.");
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("GetPendingBorrowRequests")]
         public async Task<IActionResult> GetPendingBorrowRequestsAsync()
         {
-            var response = await _userServices.GetPendingBorrowRequestsAsync();
-
-            if (response == null)
+            try
             {
-                return BadRequest("No pending borrow request found!");
+                var response = await _userServices.GetPendingBorrowRequestsAsync();
+
+                if (response == null)
+                {
+                    return BadRequest("No pending borrow request found!");
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while retrieving pending borrow requests.");
+            }
         }
 
         [HttpPut("ApproveReturnRequest")]
         public async Task<IActionResult> ApproveReturnRequestAsync([FromBody] int TransactionId)
         {
-            var response = await _userServices.ApproveReturnRequestAsync(TransactionId);
-            if (response == null) return NotFound("Book not found.");
+            try
+            {
+                var response = await _userServices.ApproveReturnRequestAsync(TransactionId);
+                if (response == null) return NotFound("Book not found.");
 
-            return Ok("Return Request Approved Successfully.");
+                return Ok("Return Request Approved Successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("GetPendingReturnRequests")]
         public async Task<IActionResult> GetPendingReturnRequestsAsync()
         {
-            var response = await _userServices.GetPendingReturnRequestsAsync();
-
-            if (response == null)
+            try
             {
-                return BadRequest("No pending return request found!");
+                var response = await _userServices.GetPendingReturnRequestsAsync();
+
+                if (response == null)
+                {
+                    return BadRequest("No pending return request found!");
+                }
+                return Ok(response);
             }
-            return Ok(response);
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while retrieving pending return requests.");
+            }
         }
 
 

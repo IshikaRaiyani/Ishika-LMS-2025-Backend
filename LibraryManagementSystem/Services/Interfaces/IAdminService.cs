@@ -40,5 +40,9 @@ namespace LibraryManagementSystem.Services.Interfaces
 
         Task<bool> UpdateBookAsync(UpdateBookDTO dto);
 
+        Task<DashboardDTO> GetDashboardMetricsAsync();
+
+        Task<List<TransactionDetailDTO>> GetAllTransactionsAsync();
+
     } 
 }

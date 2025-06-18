@@ -11,6 +11,8 @@ namespace LibraryManagementSystem.Services.Interfaces
 
         Task NotificationMarkAsReadAsync(int NotificationId);
 
+        Task NotifyWishlistUsersIfBookBecomesAvailable(int bookId);
+
 
 
     }

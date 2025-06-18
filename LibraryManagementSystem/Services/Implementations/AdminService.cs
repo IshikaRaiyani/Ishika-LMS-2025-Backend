@@ -16,10 +16,12 @@ namespace LibraryManagementSystem.Services.Implementations
     public class AdminService : IAdminService
     {
         private readonly IAdminRepository _adminRepository;
+        private readonly IEmailService _emailService;
 
-        public AdminService(IAdminRepository adminRepository)
+        public AdminService(IAdminRepository adminRepository, IEmailService emailService)
         {
             _adminRepository = adminRepository;
+            _emailService = emailService;
         }
 
         public async Task<string> AddAdminAsync(AddAdminDTO addAdminDto)
@@ -68,8 +70,6 @@ namespace LibraryManagementSystem.Services.Implementations
                 if (addLibrarianDto == null)
                 {
                     throw new Exception("Please enter the valid User Admin Details.");
-
-
                 }
 
                 if (await _adminRepository.IsEmailExistsAsync(addLibrarianDto.Email))
@@ -87,15 +87,22 @@ namespace LibraryManagementSystem.Services.Implementations
                     RoleName = "Librarian"
                 };
 
-
                 await _adminRepository.AddLibrarianAsync(UserLibrarian);
+                await _emailService.SendEmailAsync(
+                    UserLibrarian.FullName,
+                    "Welcome aboard!",
+                   
+                    "Your librarian account has been successfully registered.\n" +
+                    "You can now manage books, handle student requests, and maintain the library system.\n" +
+                    "Should you need any assistance, feel free to contact the system administrator.\\n\\n\""
+                );
+
                 return "Librarian Added Successfully";
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
-
         }
 
 
@@ -468,6 +475,16 @@ namespace LibraryManagementSystem.Services.Implementations
             
 
             return await _adminRepository.UpdateBookAsync(book);
+        }
+
+        public async Task<DashboardDTO> GetDashboardMetricsAsync()
+        {
+            return await _adminRepository.GetDashboardMetricsAsync();
+        }
+
+        public async Task<List<TransactionDetailDTO>> GetAllTransactionsAsync()
+        {
+            return await _adminRepository.GetAllTransactionsAsync();
         }
 
 

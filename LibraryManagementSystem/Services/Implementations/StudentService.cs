@@ -10,6 +10,7 @@ using LibraryManagementSystem.Repositories.Interfaces;
 using LibraryManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace LibraryManagementSystem.Services.Implementations
 {
@@ -18,12 +19,14 @@ namespace LibraryManagementSystem.Services.Implementations
         private readonly IStudentRepository _studentRepository;
         private readonly IAdminRepository _adminRepository;
         private readonly ILibrarianRepository _librarianRepository;
+        private readonly IEmailService _emailService;
 
-        public StudentService(IStudentRepository studentRepository, IAdminRepository adminRepository, ILibrarianRepository librarianRepository)
+        public StudentService(IStudentRepository studentRepository, IAdminRepository adminRepository, ILibrarianRepository librarianRepository, IEmailService emailService)
         {
             _studentRepository = studentRepository;
             _adminRepository = adminRepository;
             _librarianRepository = librarianRepository;
+            _emailService = emailService;
 
         }
         public async Task<string> RegistrationStudentAsync(RegisterStudentDTO registerStudentDTO)
@@ -48,10 +51,22 @@ namespace LibraryManagementSystem.Services.Implementations
                     FullName = registerStudentDTO.FullName,
                     Email = registerStudentDTO.Email,
                     Password = Convert.ToBase64String(hashBytes),
-                   
+
                 };
 
+            
+                
+
                 await _studentRepository.AddStudentAsync(UserAdmin);
+                await _emailService.SendEmailAsync(
+               UserAdmin.Email,
+           "Welcome to Our Library!",
+           $"Hi {UserAdmin.FullName},\n\n" +
+"We're thrilled to have you on board. Your registration was successful, and you now have full access to explore a world of books, reserve your favorites, and manage your reading journey with ease.\n\n" +
+"Here’s what you can do next:\n" + "Search and explore our digital catalog\n" + "Add books to your wishlist\n" + "Track your borrowings and history\n\n" + "— The Library Team"+ 
+           "You can now log in using your email and password to browse and borrow books.\n\n" +
+           "Happy Reading!\nLibrary Team"
+       );
                 return "Student Registered Successfully";
             }
 
@@ -240,6 +255,24 @@ namespace LibraryManagementSystem.Services.Implementations
             }
 
         }
+
+
+        public async Task<List<Book>> BookRecommendationsAsync(int userid)
+        {
+            try
+            {
+                return await _studentRepository.GetRecommendedBooksAsync(userid);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception("Something went wrong");
+            }
+
+        }
+
+       
+
 
     }
 

@@ -29,6 +29,10 @@ namespace LibraryManagementSystem.Services.Interfaces
         Task<List<GetAllBooksDTO>> GetBestSellingBooksAsync();
 
         Task<List<GetAllBooksDTO>> GetNewArrivalsAsync();
+
+        Task<List<Book>> BookRecommendationsAsync(int userid);
+
+        
     }
     
 }

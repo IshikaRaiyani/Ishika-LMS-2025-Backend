@@ -13,13 +13,17 @@ namespace LibraryManagementSystem.Services.Implementations
         private readonly ILibrarianRepository _librarianRepository;
         private readonly IAdminRepository _adminRepository;
         private readonly INotificationRepository _notificationRepository;
+        private readonly IEmailService _emailService;
+        private readonly INotificationService _notificationService;
 
 
-        public LibrarianService(ILibrarianRepository librarianRepository, IAdminRepository adminRepository, INotificationRepository notificationRepository)
+        public LibrarianService(ILibrarianRepository librarianRepository, IAdminRepository adminRepository, INotificationRepository notificationRepository, IEmailService emailService, INotificationService notificationService)
         {
            _librarianRepository = librarianRepository;
             _adminRepository = adminRepository;
             _notificationRepository = notificationRepository;
+            _emailService = emailService;
+            _notificationService = notificationService;
         }
 
         public async Task<string> ApproveBorrowRequestAsync(int TransactionId)
@@ -60,11 +64,18 @@ namespace LibraryManagementSystem.Services.Implementations
                 {
                     UserId = user.UserId,
                     Message = $"Your borrow request for the book {book.Title} has been approved. Please collect it from the library.",
-                    CreatedAt = DateOnly.FromDateTime(DateTime.Today),
+                    CreatedAt = DateTime.Now,
                     IsRead = false
                 };
 
                 await _notificationRepository.AddNotificationAsync(notification);
+                await _emailService.SendEmailAsync(
+              user.Email,
+              "Borrow Request Approved",
+               $"Your request for the book '{book.Title}' has been approved. Please collect it from the library."
+);
+
+               
                 return "Borrow Request Approved Successfully..";
             }
 
@@ -179,6 +190,7 @@ namespace LibraryManagementSystem.Services.Implementations
                 transaction.ReturnStatus = "Approved";
                 transaction.Fine = fine;
                 user.NoofBooks = user.NoofBooks - 1;
+                int previousCopies = book.AvailableCopies;
                 book.AvailableCopies = book.AvailableCopies + 1;
 
                 await _adminRepository.UpdateBookAsync(book);
@@ -186,10 +198,34 @@ namespace LibraryManagementSystem.Services.Implementations
 
                 if (await _librarianRepository.ApproveReturnRequestAsync(transaction))
                 {
-                    return "Return Request Approved Successfully..";
+                    var notification = new StudentNotification
+                    {
+                        UserId = user.UserId,
+                        Message = $"Your return request for the book {book.Title} has been approved with total applicable fine of Rs.'{transaction.Fine}'. Please submit it to the library.",
+                        CreatedAt = DateTime.Now,
+                        IsRead = false
+                    };
+                    await _notificationRepository.AddNotificationAsync(notification);
+
+                    await _emailService.SendEmailAsync(
+                  user.Email,
+                  "Return Request Approved",
+                   $"Your return request for the book '{book.Title}' has been approved with total applicable fine of Rs. '{transaction.Fine}'. Please submit it to the library.");
+                   
                 }
 
-               
+                if(previousCopies == 0 && book.AvailableCopies > 0)
+                {
+                    await _notificationService.NotifyWishlistUsersIfBookBecomesAvailable(book.BookId);
+
+                 
+                    
+
+                }
+
+                return "Return Request Approved Successfully..";
+
+
             }
             return "Something went wrong!";
 

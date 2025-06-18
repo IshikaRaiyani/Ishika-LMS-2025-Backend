@@ -65,6 +65,26 @@
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetDashboardMetricsAsync",
+    "RelativePath": "AddAdminController/Dashboardmetrics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "LibraryManagementSystem.DTOs.AdminDTOs.DashboardDTO",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
     "Method": "DeleteBookAsync",
     "RelativePath": "AddAdminController/DeleteBooks/{bookId}",
     "HttpMethod": "DELETE",
@@ -124,6 +144,16 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
+    "Method": "GetAllTransactionsAsync",
+    "RelativePath": "AddAdminController/GetAllTransactions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.AdminController",
@@ -353,6 +383,32 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LibraryManagementSystem.Controllers.StudentController",
+    "Method": "BookRecommendationsAsync",
+    "RelativePath": "StudentController/BookRecommendations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userid",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[LibraryManagementSystem.Models.Book, LibraryManagementSystem, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "LibraryManagementSystem.Controllers.StudentController",

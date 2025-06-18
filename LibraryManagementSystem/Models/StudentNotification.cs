@@ -15,13 +15,9 @@ namespace LibraryManagementSystem.Models
 
         public string Message { get; set; }
 
-        public DateOnly CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public bool IsRead { get; set; }
-
-          
-            
-
 
     }
 }

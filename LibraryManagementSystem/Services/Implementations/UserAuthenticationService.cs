@@ -51,7 +51,15 @@ namespace LibraryManagementSystem.Services.Implementations
 
                 if(user.RoleName=="Student" && user.Status=="Blocked")
                 {
-                    throw new Exception("Your account is blocked. Please contact your admin!");
+                    string message1 = "Your account is blocked. Please contact your admin!!";
+                    return new AccessTokenResponseDTO
+                    {
+                        
+                        Message = message1,
+                       
+
+
+                    };
                 }
 
                 var sha256 = SHA256.Create();
@@ -108,17 +116,10 @@ namespace LibraryManagementSystem.Services.Implementations
                     throw new Exception("User email not found");
                 }
 
-                //generating JWt reset token
+                
                     var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes("IshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyaniIshikaSRaiyani");
-                //var expiryTime = DateTime.UtcNow.AddMinutes(1);
-
-                //var claims = new List<Claim>
-                //{
-                //  new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                //  new Claim(ClaimTypes.Email, user.Email),
-                //  new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expiryTime).ToUnixTimeSeconds().ToString())
-                //};
+                
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -133,7 +134,7 @@ namespace LibraryManagementSystem.Services.Implementations
                 var resetLink = $"http://localhost:4200/auth/reset-password?token={tokenstring}";
 
 
-                // Email content
+                
                 var subject = "Reset Your Password";
                 var message = $@"
         <h3>Hello,</h3>
@@ -221,7 +222,7 @@ namespace LibraryManagementSystem.Services.Implementations
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return "Invalid Token";
+                return ex.InnerException?.Message ?? ex.Message;
             }
         }
 

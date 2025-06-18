@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using LibraryManagementSystem.Services.Implementations;
 using Microsoft.AspNetCore.Authorization;
 using LibraryManagementSystem.DTOs.BookDTOs;
+using LibraryManagementSystem.Models;
 
 
 namespace LibraryManagementSystem.Controllers
@@ -12,6 +13,7 @@ namespace LibraryManagementSystem.Controllers
     [ApiController]
     [Route("StudentController")]
     [Authorize(Roles = "Student")]
+
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _userServices;
@@ -144,6 +146,19 @@ namespace LibraryManagementSystem.Controllers
             }
             return Ok(allBooks);
         }
+
+        [HttpGet("BookRecommendations")]
+
+        public async Task<List<Book>> BookRecommendationsAsync(int userid)
+        {
+            var recommendation = await _userServices.BookRecommendationsAsync(userid);
+
+            return recommendation;
+        }
+
+
+       
+
 
 
     }
