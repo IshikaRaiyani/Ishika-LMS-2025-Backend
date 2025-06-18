@@ -26,7 +26,7 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
         public async Task<User> GetUserByIDAsync(int userid)
         {
-            //return await _context.Users.FindAsync(userid);
+            
             return await _context.Users.FirstOrDefaultAsync(u => u.UserId == userid);
 
 
@@ -217,8 +217,6 @@ namespace LibraryManagementSystem.Repositories.Implementations
         {
             try
             {
-
-
                 var users = _context.Books.Remove(book);
                 await _context.SaveChangesAsync();
                 return "Book Deleted Successfully";
@@ -326,7 +324,6 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
 
         }
-
 
         public async Task<List<TransactionDetailDTO>> GetAllTransactionsAsync()
         {

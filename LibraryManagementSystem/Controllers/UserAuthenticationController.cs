@@ -8,7 +8,7 @@ namespace LibraryManagementSystem.Controllers
 {
     [ApiController]
     [Route("UserAuthenticationController")]
-    [Authorize(Roles = "Admin, Librarian, Student")]
+    
     public class UserAuthenticationController : ControllerBase
     {
         private readonly IUserAuthenticationService _userAuthenticationService;

@@ -271,13 +271,8 @@ namespace LibraryManagementSystem.Repositories.Implementations
 
             return await _context.studentwishlists.Where(w=> w.BookId == bookId).Include(w => w.User)
                 .ToListAsync();
-            ;
+            
         }
-
-       
-
-
-
     }
 
 

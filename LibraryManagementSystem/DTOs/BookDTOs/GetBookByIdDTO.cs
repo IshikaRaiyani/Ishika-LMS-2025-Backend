@@ -34,6 +34,6 @@ namespace LibraryManagementSystem.DTOs.BookDTOs
 
         public bool IsBestSelling { get; set; }
 
-        //public DateOnly AddedOn { get; set; }
+       
     }
 }

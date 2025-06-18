@@ -89,7 +89,7 @@ namespace LibraryManagementSystem.Services.Implementations
                 var returnStatus = "None";
                 var returnStatus1 = "Pending";
                 var isBookExisting = await _studentRepository.isBookExistingAsync(userid, bookid, borrowStatus, borrowStatus1, returnStatus,returnStatus1);
-                //Console.WriteLine(noofbooks);
+                
                 if (noofbooks < 3 )
                 {
                     if (!isBookExisting)

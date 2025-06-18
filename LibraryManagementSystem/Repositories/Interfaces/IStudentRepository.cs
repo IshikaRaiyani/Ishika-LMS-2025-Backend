@@ -40,11 +40,6 @@ namespace LibraryManagementSystem.Repositories.Interfaces
 
         Task<List<GetAllBooksDTO>> GetNewArrivalsAsync();
 
-        //Task<List<Book>> GetUserBookHistoryAsync(int userid);
-
-        //Task<List<Book>> GetMostIssuedBooksAsync(int count);
-
-        //Task<List<Book>> GetBooksByAuthorOrGenreAsync(List<string> genre, List<string> author, List<int> readBookIds);
         Task<List<Book>> GetRecommendedBooksAsync(int userid);
 
         Task<List<Studentwishlist>> FindWishlistAsync(int bookId);

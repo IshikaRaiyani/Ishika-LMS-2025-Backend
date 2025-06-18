@@ -17,8 +17,6 @@ namespace LibraryManagementSystem.Repositories.Interfaces
 
         Task<string> GetUserRoleAsync(int userid);
 
-
-
         Task StudentStatusUpdateAsync(User user);
 
         Task<string> GetActiveUsersAsync();
@@ -50,10 +48,6 @@ namespace LibraryManagementSystem.Repositories.Interfaces
         Task<DashboardDTO> GetDashboardMetricsAsync();
 
         Task<List<TransactionDetailDTO>> GetAllTransactionsAsync();
-
-       
-
-
 
 
     }

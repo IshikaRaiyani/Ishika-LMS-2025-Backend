@@ -15,13 +15,11 @@ namespace LibraryManagementSystem.DTOs.LibrarianDTOs
         public int BookId { get; set; }
 
        
-
         public string Title { get; set; }
 
         public int AvailableCopies { get; set; }
 
         public DateOnly BorrowRequestDate { get; set; }
-
 
 
         public string BorrowStatus { get; set; }

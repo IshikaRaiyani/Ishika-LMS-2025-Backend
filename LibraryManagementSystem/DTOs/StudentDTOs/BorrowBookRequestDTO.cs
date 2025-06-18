@@ -11,13 +11,11 @@ namespace LibraryManagementSystem.DTOs.StudentDTOs
         [Required(ErrorMessage = "User Id is required.")]
         public int UserId { get; set; }
 
-        //public User User { get; set; }
 
         [ForeignKey("BookId")]
         [Required(ErrorMessage = "Book Id is required.")]
         public int BookId { get; set; }
 
-        //public Book Book { get; set; }
 
         public string? RequestType { get; set; }
 

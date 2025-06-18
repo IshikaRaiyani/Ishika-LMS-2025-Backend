@@ -171,7 +171,7 @@ namespace LibraryManagementSystem.Services.Implementations
             var transaction = await _librarianRepository.GetTransactionById(TransactionId);
             var user = await _adminRepository.GetUserByIDAsync(transaction.UserId);
             var book = await _adminRepository.GetBookbyIdAsync(transaction.BookId);
-            //var fine = await _librarianRepository.GetUserFineAsync(transaction.UserId);
+           
             
             var today = DateOnly.FromDateTime(DateTime.Today);
             TimeSpan returndate = transaction.ReturnDate.Value.ToDateTime(TimeOnly.MinValue) - transaction.DueDate.Value.ToDateTime(TimeOnly.MinValue);
@@ -217,9 +217,6 @@ namespace LibraryManagementSystem.Services.Implementations
                 if(previousCopies == 0 && book.AvailableCopies > 0)
                 {
                     await _notificationService.NotifyWishlistUsersIfBookBecomesAvailable(book.BookId);
-
-                 
-                    
 
                 }
 

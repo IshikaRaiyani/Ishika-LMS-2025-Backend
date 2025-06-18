@@ -4,17 +4,17 @@ namespace LibraryManagementSystem.Models
 {
     public class Book
     {
-             [Key]
-            public int BookId { get; set; }
 
-            [Required(ErrorMessage = "Title is required.")]
-            [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
-           public string Title { get; set; }
+        [Key]
+        public int BookId { get; set; }
 
-            [Required(ErrorMessage = "Author is required.")]
-            [StringLength(100, ErrorMessage = "Author cannot exceed 100 characters")]
-            public string Author { get; set; }
+        [Required(ErrorMessage = "Title is required.")]
+        [StringLength(100, ErrorMessage = "Title cannot exceed 100 characters")]
+        public string Title { get; set; }
 
+        [Required(ErrorMessage = "Author is required.")]
+        [StringLength(100, ErrorMessage = "Author cannot exceed 100 characters")]
+        public string Author { get; set; }
 
         [Required(ErrorMessage = "Genre is required.")]
         [StringLength(50, ErrorMessage = "Genre cannot exceed 100 characters")]

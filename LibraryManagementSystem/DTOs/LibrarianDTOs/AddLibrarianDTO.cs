@@ -8,7 +8,7 @@ namespace LibraryManagementSystem.DTOs.LibrarianDTOs
         [StringLength(100, ErrorMessage = "Full Name cannot exceed 100 characters")]
         public string FullName { get; set; }
 
-        //public string RoleName { get; set; }
+       
 
         [Required(ErrorMessage = "Email is required")]
         [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters")]
